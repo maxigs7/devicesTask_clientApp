@@ -1,0 +1,36 @@
+.container {
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.name {
+  color: #5574ff;
+}
+
+.actions {
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  margin-top: auto;
+  overflow: hidden;
+}
+
+.button {
+  border: none;
+  color: white;
+  cursor: pointer;
+  flex-basis: 100%;
+  outline: none;
+  padding: 10px 15px;
+  text-transform: uppercase;
+}
+
+.update {
+  background-color: #5574ff;
+}
+
+.delete {
+  background-color: #ff5555;
+}
