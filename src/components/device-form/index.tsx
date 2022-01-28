@@ -14,7 +14,7 @@ export const DeviceForm: React.FC<IProps> = ({ control, formState: { errors }, r
       <span>
         System Name <span className={styles.required}>*</span>
       </span>
-      <input {...register('system_name', { required: true })} className={styles.field} />
+      <input {...register('system_name', { required: true })} placeholder={'System Name...'} className={styles.field} />
       {errors.system_name && <span className={styles.error}>This field is required</span>}
     </label>
     <label htmlFor="type" className={styles.label}>
@@ -41,7 +41,21 @@ export const DeviceForm: React.FC<IProps> = ({ control, formState: { errors }, r
       <span>
         HDD Capacity <span className={styles.required}>*</span>
       </span>
-      <input {...register('hdd_capacity', { required: true })} className={styles.field} />
+      <Controller
+        control={control}
+        name="hdd_capacity"
+        rules={{ required: true }}
+        render={({ field: { value, onChange, onBlur } }) => (
+          <input
+            type="number"
+            name="hdd_capacity"
+            className={styles.field}
+            placeholder={'HDD Capacity...'}
+            onBlur={onBlur}
+            onChange={(e) => onChange(e.target.value.replace(/[^0-9]/g, ''))}
+          />
+        )}
+      />
       {errors.hdd_capacity && <span className={styles.error}>This field is required</span>}
     </label>
   </>
