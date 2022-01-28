@@ -31,7 +31,7 @@ export const DeviceFormModal: React.FC<IProps> = ({ confirm, dismiss, id, show }
   const get = useDevice();
   const getAsync = useCallback(() => get(id as string), [get, id]);
 
-  const { data: device, isLoading, execute } = useAsync(getAsync);
+  const { data: device, execute } = useAsync(getAsync);
 
   const onSubmit = handleSubmit((data: IDevice) => {
     const promise = id ? update : create;

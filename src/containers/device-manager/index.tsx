@@ -6,6 +6,7 @@ import { useBoolean } from '../../hooks/useBoolean';
 import { useDevices } from '../../hooks/useDevices';
 import { useFilters } from '../../providers/filters';
 import { IDevice } from '../../shared';
+import { DeviceDeleteConfirm } from '../device-delete-confirm';
 import { DeviceFormModal } from '../device-form-modal';
 import styles from './index.module.css';
 
@@ -14,9 +15,13 @@ export const DeviceManager: React.FC = () => {
   const { sortBy, type } = useFilters();
   const { off, on, value } = useBoolean();
   const [id, setId] = useState<string>();
+  const [idToDelete, setIdToDelete] = useState<string>();
   const { data, execute, isLoading } = useAsync<IDevice[]>(getDevices);
 
-  const onDeleteHandler = () => {};
+  const onDeleteHandler = (id: string) => {
+    setIdToDelete(id);
+    on();
+  };
 
   const onUpdateHandler = (id: string) => {
     setId(id);
@@ -30,6 +35,7 @@ export const DeviceManager: React.FC = () => {
 
   const onDismiss = () => {
     setId(undefined);
+    setIdToDelete(undefined);
     off();
   };
 
@@ -66,7 +72,8 @@ export const DeviceManager: React.FC = () => {
 
       <DeviceList devices={processedData} isLoading={isLoading} onDelete={onDeleteHandler} onUpdate={onUpdateHandler} />
 
-      <DeviceFormModal show={value} dismiss={onDismiss} id={id} confirm={onConfirm} />
+      {value && !idToDelete && <DeviceFormModal show={value} dismiss={onDismiss} id={id} confirm={onConfirm} />}
+      {value && !id && <DeviceDeleteConfirm show={value} dismiss={onDismiss} id={idToDelete} confirm={onConfirm} />}
     </div>
   );
 };
