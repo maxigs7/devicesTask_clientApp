@@ -14,13 +14,15 @@ export const DeviceManager: React.FC = () => {
   const getDevices = useDevices();
   const { sortBy, type } = useFilters();
   const { off, on, value } = useBoolean();
+  const { off: offDelete, on: onDelete, value: valueDelete } = useBoolean();
+
   const [id, setId] = useState<string>();
   const [idToDelete, setIdToDelete] = useState<string>();
   const { data, execute, isLoading } = useAsync<IDevice[]>(getDevices);
 
   const onDeleteHandler = (id: string) => {
     setIdToDelete(id);
-    on();
+    onDelete();
   };
 
   const onUpdateHandler = (id: string) => {
@@ -37,6 +39,7 @@ export const DeviceManager: React.FC = () => {
     setId(undefined);
     setIdToDelete(undefined);
     off();
+    offDelete();
   };
 
   const processedData = useMemo(() => {
@@ -72,8 +75,8 @@ export const DeviceManager: React.FC = () => {
 
       <DeviceList devices={processedData} isLoading={isLoading} onDelete={onDeleteHandler} onUpdate={onUpdateHandler} />
 
-      {value && !idToDelete && <DeviceFormModal show={value} dismiss={onDismiss} id={id} confirm={onConfirm} />}
-      {value && !id && <DeviceDeleteConfirm show={value} dismiss={onDismiss} id={idToDelete} confirm={onConfirm} />}
+      {value && <DeviceFormModal show={value} dismiss={onDismiss} id={id} confirm={onConfirm} />}
+      {valueDelete && <DeviceDeleteConfirm show={valueDelete} dismiss={onDismiss} id={idToDelete} confirm={onConfirm} />}
     </div>
   );
 };
