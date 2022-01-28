@@ -1,0 +1,9 @@
+.close {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.5rem;
+  line-height: 1;
+  text-align: center;
+}
