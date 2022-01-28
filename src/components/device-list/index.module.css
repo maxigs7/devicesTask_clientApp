@@ -9,6 +9,17 @@
   /* margin-bottom: 10px; */
 }
 
+.loading {
+  color: white;
+  flex-basis: 100%;
+  margin: 100px 0;
+  text-align: center;
+}
+
+.loading svg {
+  width: 100px;
+}
+
 @media screen and (min-width: 425px) {
   .item {
     flex-basis: calc(50% - 10px);
