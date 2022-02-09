@@ -54,8 +54,8 @@ export const DeviceManager: React.FC = () => {
 
     if (sortBy) {
       processed = processed.sort((deviceA, deviceB) => {
-        const valA = sortBy === 'hdd_capacity' ? Number(deviceA[sortBy]) : deviceA[sortBy];
-        const valB = sortBy === 'hdd_capacity' ? Number(deviceB[sortBy]) : deviceB[sortBy];
+        const valA = sortBy === 'hdd_capacity' ? Number(deviceA[sortBy]) : deviceA[sortBy].toLowerCase();
+        const valB = sortBy === 'hdd_capacity' ? Number(deviceB[sortBy]) : deviceB[sortBy].toLowerCase();
         if (valA < valB) return -1;
         if (valA > valB) return 1;
         return 0;
