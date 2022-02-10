@@ -8,14 +8,14 @@ type UseDeviceUpdate = () => UseDeviceUpdateReturn;
 export const useDeviceUpdate: UseDeviceUpdate = () => {
   const fetch = useFetch();
   return useCallback(
-    ({ id, ...device }: IDevice) =>
-      fetch(`devices/${id}`, {
+    (device: IDevice) =>
+      fetch(`devices/${device.id}`, {
         body: JSON.stringify(device),
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-      }).then((response: IDevice) => response),
+      }).then(() => device),
     [fetch],
   );
 };
