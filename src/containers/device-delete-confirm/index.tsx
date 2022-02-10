@@ -1,24 +1,26 @@
+import { useState } from 'react';
 import { CloseButton } from '../../components/ui/close-button';
 import { Modal } from '../../components/ui/modal';
-import { useAsync } from '../../hooks/useAsync';
 import { useDeviceDelete } from '../../hooks/useDeviceDelete';
 import { cx } from '../../shared/classnames';
 import styles from './index.module.css';
 
 interface IProps {
-  confirm?: () => void;
-  dismiss?: () => void;
-  id?: string;
+  confirm: () => void;
+  dismiss: () => void;
+  id: string;
   show: boolean;
 }
 
 export const DeviceDeleteConfirm: React.FC<IProps> = ({ confirm, dismiss, id, show }) => {
   const deleteFn = useDeviceDelete();
-  const { isLoading, execute } = useAsync(() => deleteFn(id as string));
+  const [isLoading, setIsLoading] = useState(false);
   const onConfirm = () => {
-    execute().then(() => {
-      confirm && confirm();
-      dismiss && dismiss();
+    setIsLoading(true);
+    deleteFn(id as string).then(() => {
+      setIsLoading(false);
+      confirm();
+      dismiss();
     });
   };
 

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { DeviceFilters } from '../../components/device-filters';
 import { DeviceList } from '../../components/device-list';
-import { useBoolean } from '../../hooks/useBoolean';
 import { useFilters } from '../../providers/filters';
 import { DeviceType, IDevice } from '../../shared';
 import { useStore } from '../../store';
@@ -26,44 +25,55 @@ const sortingDevices = (devices: IDevice[], sortBy: keyof IDevice) => {
 export const DeviceManager: React.FC = () => {
   const [state, dispatch] = useStore();
   const { sortBy, type } = useFilters();
-  const { off, on, value } = useBoolean();
-  const { off: offDelete, on: onDelete, value: valueDelete } = useBoolean();
+  const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const [devices, setDevices] = useState<IDevice[]>([]);
   const [device, setDevice] = useState<IDevice>();
 
-  const [idToDelete, setIdToDelete] = useState<string>();
-
-  const onDeleteHandler = (device: IDevice) => {
-    setIdToDelete(device.id);
-    onDelete();
+  //***** FORM MODAL *****/
+  const onCreateHandler = () => {
+    setIsFormModalOpen(true);
   };
 
   const onUpdateHandler = (device: IDevice) => {
+    setIsFormModalOpen(true);
     setDevice(device);
-    on();
   };
 
-  const saveDevice = (deviceConfirmed: IDevice) => {
+  const onSaveDevice = (deviceConfirmed: IDevice) => {
     if (device?.id) {
       dispatch.onUpdatedDevice(deviceConfirmed);
     } else {
       dispatch.onCreatedDevice(deviceConfirmed);
     }
-    onDismiss();
+
+    onCancelFormModal();
+  };
+
+  const onCancelFormModal = () => {
+    setDevice(undefined);
+    setIsFormModalOpen(false);
+  };
+
+  //***** DELETE CONFIRMATION *****/
+  const onDeleteHandler = (device: IDevice) => {
+    setIsDeleteOpen(true);
+    setDevice(device);
   };
 
   const onConfirmDelete = () => {
-    dispatch.onDeletedDevice(idToDelete as string);
-    onDismiss();
+    const id = device?.id as string; // We need to force this cast. It will always have a value at this point
+    dispatch.onDeletedDevice(id);
+    onCancelDelete();
   };
 
-  const onDismiss = () => {
+  const onCancelDelete = () => {
     setDevice(undefined);
-    setIdToDelete(undefined);
-    off();
-    offDelete();
+    setIsDeleteOpen(false);
   };
+
+  //***** EFFECTS *****/
 
   useEffect(() => {
     let processed = [...state.devices];
@@ -83,12 +93,12 @@ export const DeviceManager: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <DeviceFilters onCreate={() => on()} className={styles.filters} />
+      <DeviceFilters onCreate={onCreateHandler} className={styles.filters} />
 
       <DeviceList devices={devices} isLoading={state.isLoading} onDelete={onDeleteHandler} onUpdate={onUpdateHandler} />
 
-      {value && <DeviceFormModal isOpen={value} dismiss={onDismiss} device={device} confirm={saveDevice} />}
-      {valueDelete && <DeviceDeleteConfirm show={valueDelete} dismiss={onDismiss} id={idToDelete} confirm={onConfirmDelete} />}
+      <DeviceFormModal isOpen={isFormModalOpen} dismiss={onCancelFormModal} device={device} confirm={onSaveDevice} />
+      {device && <DeviceDeleteConfirm show={isDeleteOpen} dismiss={onCancelDelete} id={device.id} confirm={onConfirmDelete} />}
     </div>
   );
 };
