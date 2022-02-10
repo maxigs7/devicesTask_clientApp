@@ -23,7 +23,7 @@ describe('<DeviceItem />', () => {
     render(<DeviceItem device={mockDevice} onUpdate={onUpdate} />);
     fireEvent.click(screen.getByText('Update'));
     expect(onUpdate).toHaveBeenCalled();
-    expect(onUpdate).toHaveBeenCalledWith(mockDevice.id);
+    expect(onUpdate).toHaveBeenCalledWith(mockDevice);
   });
 
   it('onDelete should be fired', () => {
@@ -31,6 +31,6 @@ describe('<DeviceItem />', () => {
     render(<DeviceItem device={mockDevice} onDelete={onDelete} />);
     fireEvent.click(screen.getByText('Delete'));
     expect(onDelete).toHaveBeenCalled();
-    expect(onDelete).toHaveBeenCalledWith(mockDevice.id);
+    expect(onDelete).toHaveBeenCalledWith(mockDevice);
   });
 });

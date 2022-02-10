@@ -6,8 +6,8 @@ import styles from './index.module.css';
 interface IProps {
   devices?: IDevice[];
   isLoading: boolean;
-  onDelete?: (id: string) => void;
-  onUpdate?: (id: string) => void;
+  onDelete?: (device: IDevice) => void;
+  onUpdate?: (device: IDevice) => void;
 }
 
 export const DeviceList: React.FC<IProps> = ({ devices = [], isLoading, onDelete, onUpdate }) => {

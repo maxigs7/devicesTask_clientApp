@@ -2,8 +2,14 @@
   background-color: white;
   border-radius: 10px;
   display: flex;
+  gap: 10px;
   flex-direction: column;
   text-align: center;
+}
+
+.container p,
+.container .name {
+  margin: 0;
 }
 
 .name {

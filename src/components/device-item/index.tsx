@@ -5,13 +5,13 @@ import styles from './index.module.css';
 
 interface IProps extends ComponentProps<'div'> {
   device: IDevice;
-  onDelete?: (id: string) => void;
-  onUpdate?: (id: string) => void;
+  onDelete?: (device: IDevice) => void;
+  onUpdate?: (device: IDevice) => void;
 }
 
 export const DeviceItem: React.FC<IProps> = ({ className, device, onDelete, onUpdate }) => {
-  const onDeleteHandler = () => onDelete && onDelete(device.id);
-  const onUpdateHandler = () => onUpdate && onUpdate(device.id);
+  const onDeleteHandler = () => onDelete && onDelete(device);
+  const onUpdateHandler = () => onUpdate && onUpdate(device);
 
   return (
     <div className={cx(styles.container, className)}>
