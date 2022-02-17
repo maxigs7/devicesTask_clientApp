@@ -33,6 +33,7 @@ export const DeviceManager: React.FC = () => {
 
   //***** FORM MODAL *****/
   const onCreateHandler = () => {
+    setDevice(undefined);
     setIsFormModalOpen(true);
   };
 

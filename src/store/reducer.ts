@@ -11,7 +11,7 @@ export const reducer = (state: IState, action: Actions): IState => {
     case DELETED_DEVICE:
       return {
         ...state,
-        devices: [...state.devices.filter((device) => device.id !== action.payload)],
+        devices: state.devices.filter((device) => device.id !== action.payload),
       };
     case REQUEST_DEVICES:
       return {
@@ -28,9 +28,8 @@ export const reducer = (state: IState, action: Actions): IState => {
     case UPDATED_DEVICE:
       return {
         ...state,
-        devices: [...state.devices.map((device) => (device.id === action.payload.id ? action.payload : device))],
+        devices: state.devices.map((device) => (device.id === action.payload.id ? action.payload : device)),
       };
-
     default:
       return state;
   }

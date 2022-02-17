@@ -50,6 +50,8 @@ export const DeviceFormModal: React.FC<IProps> = ({ confirm, device, dismiss, is
   useEffect(() => {
     if (device) {
       reset(device);
+    } else {
+      reset({});
     }
   }, [device, reset]);
 

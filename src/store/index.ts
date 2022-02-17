@@ -20,11 +20,15 @@ export const useStore = (): [IState, IDispatch] => {
     dispatch(deletedDevice(id));
   }, []);
 
-  const onRequestDevices = useCallback(() => {
+  const onRequestDevices = useCallback(async () => {
     dispatch(requestDevices());
-    getDevices().then((devices) => {
+
+    try {
+      const devices = await getDevices();
       dispatch(requestDevicesSuccess(devices));
-    });
+    } catch (error) {
+      console.log(error);
+    }
   }, [getDevices]);
 
   const onUpdatedDevice = useCallback((device: IDevice) => {
@@ -41,5 +45,5 @@ export const useStore = (): [IState, IDispatch] => {
     [onCreatedDevice, onRequestDevices, onDeletedDevice, onUpdatedDevice],
   );
 
-  return useMemo(() => [state, returnDispatch], [state, returnDispatch]);
+  return [state, returnDispatch];
 };
